@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+/* Hide vertical scrollbar for a cleaner full page experience if desired, but default is fine */
+body, html {
+  /* Prevent default browser scrollbar rendering entirely */
+  overflow: hidden; 
+  /* Fallback for some browsers */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Chrome, Safari and Opera */
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+  display: none;
+}
+
+/* Force hero section to strictly take exact screen height minus nav */
+.VPHero,
+.VPHomeHero {
+  height: calc(100vh - var(--vp-nav-height));
+  min-height: calc(100vh - var(--vp-nav-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  /* Make sure hero content sits above Vanta but background allows it to show through */
+  background: transparent !important;
+  z-index: 1; /* Ensure VPHomeHero is above Vanta's z-index 0 */
+}
+
+/* Ensure child content doesn't block hits if not needed, but text needs to be selectable */
+.VPHero .container {
+  z-index: 2;
+  position: relative;
+}
+
+/* The actual scrollable container setup */
+#app {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  /* CSS Snap scrolling magic to make it behave like separate pages */
+  scroll-snap-type: y mandatory;
+}
+
+/* Hide scrollbar for the #app container as well */
+#app::-webkit-scrollbar {
+  display: none;
+}
+#app {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ensure sections snap to the top */
+.VPHomeHero,
+.VPFeatures {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Make features stretch properly for snapping */
+.VPFeatures {
+  min-height: 100vh;
+  padding-top: var(--vp-nav-height);
+  display: flex;
+  align-items: center;
+}
+
+/* --------------- Home Card Beautification --------------- */
+.VPFeature {
+  position: relative !important;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--vp-c-bg-soft) !important;
+  /* Light Mode Default: Pale Blue/sky to Light Purple */
+  background: linear-gradient(135deg, #e0f2fe, #f3e8ff) !important;
+  background-color: transparent !important; /* Override standard BG */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  isolation: isolate; /* Create new stacking context */
+  z-index: 0;
+}
+
+/* Pseudo-element for the expanding circle (Hover Effect) */
+.VPFeature:before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -24px;
+  right: -24px;
+  /* Light Mode Hover Bubble: Deep Blue to Deep Purple */
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  transform: scale(0); /* Start hidden/small */
+  transform-origin: 50% 50%;
+  transition: transform 0.5s ease-out;
+}
+
+/* Pseudo-element for the "Go Corner" Arrow */
+.VPFeature:after {
+  content: '→';
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  /* Corner Color: Deep Blue to match the bubble theme */
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  border-bottom-left-radius: 12px; 
+  /* Or use the style from example: border-radius: 0 4px 0 32px; */
+  border-radius: 0 0 0 16px; 
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+/* Hover States */
+.VPFeature:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  border-color: transparent !important;
+  box-shadow: 0 20px 25px -5px rgba(50, 50, 93, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.VPFeature:hover:before {
+  transform: scale(30); /* Expand to fill */
+}
+
+/* Text Color Transitions on Hover (Light Mode: Dark -> White) */
+.VPFeature .title {
+  color: #1e293b !important; /* Dark Slate */
+  transition: color 0.3s ease !important;
+  position: relative;
+  z-index: 2;
+}
+.VPFeature:hover .title {
+  color: #ffffff !important;
+}
+
+.VPFeature .details {
+  color: #475569 !important; /* Slate 600 */
+  transition: color 0.3s ease !important;
+  position: relative;
+  z-index: 2;
+}
+.VPFeature:hover .details {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.VPFeature .icon {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+.VPFeature:hover .icon {
+  transform: scale(1.1);
+}
+
+/* Hide the arrow on hover? Or keep it? Example doesn't specify logic for corner interaction, 
+   but typically it stays or changes opacity. Let's keep it. */
+
+
+/* ---------------- Dark Mode Overrides ---------------- */
+/* Requirement: Colors reversed. 
+   Default Dark: Dark Blue/Purple Gradient.
+   Hover Dark: Light Blue/Purple Gradient.
+*/
+.dark .VPFeature {
+  border-color: #334155 !important;
+  /* Dark Mode Default: Dark Blue -> Dark Purple */
+  background: linear-gradient(135deg, #0f172a, #312e81) !important;
+}
+
+.dark .VPFeature:before {
+  /* Dark Mode Hover Bubble: Light Blue -> Light Purple */
+  background: linear-gradient(135deg, #93c5fd, #c4b5fd);
+}
+
+.dark .VPFeature:after {
+  /* Corner in Dark Mode: Maybe lighter so it pops? Or match text? */
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  color: #0f172a;
+}
+
+/* Text Colors in Dark Mode */
+.dark .VPFeature .title {
+  color: #f1f5f9 !important; /* Light Text */
+}
+/* On hover (bubble is light), text should go dark */
+.dark .VPFeature:hover .title {
+  color: #0f172a !important; /* Dark Text */
+}
+
+.dark .VPFeature .details {
+  color: #cbd5e1 !important; /* Light Gray */
+}
+.dark .VPFeature:hover .details {
+  color: #1e293b !important; /* Dark Gray */
+}
+
+.VPFeature .link-text {
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* Force color inheritance and override on all child elements of link-text */
+.VPFeature .link-text, 
+.VPFeature .link-text .link-text-value,
+.VPFeature .link-text .vpi-arrow-right {
+  transition: color 0.3s ease !important;
+  color: inherit !important; /* Ensure it takes color from parent definition below */
+  font-weight: 600; /* Make link more distinct */
+  text-decoration: underline; /* Add underline to indicate it's a link */
+  text-underline-offset: 4px;
+}
+
+/* Light Mode Default (Light BG): Standard Blue Link Color */
+/* Background: Pale Blue/Purple */
+.VPFeature {
+  --vp-feature-link-color: #2563eb; /* Blue 600 */
+}
+.VPFeature .link-text {
+  color: var(--vp-feature-link-color) !important;
+}
+
+/* Light Mode Hover (Dark BG): Bright Cyan Link Color */
+/* Background: Dark Blue/Purple */
+.VPFeature:hover {
+  --vp-feature-link-color: #67e8f9; /* Cyan 300 - pops against dark blue/purple bg */
+}
+.VPFeature:hover .link-text {
+  transform: translateX(4px);
+  opacity: 1 !important;
+}
+
+/* Dark Mode Overrides */
+
+/* Dark Mode Default (Dark BG): Light Blue Link Color */
+/* Background: Dark Blue/Purple */
+.dark .VPFeature {
+  --vp-feature-link-color: #60a5fa; /* Blue 400 */
+}
+
+/* Dark Mode Hover (Light BG): Deep Indigo Link Color */
+/* Background: Light Blue/Purple */
+.dark .VPFeature:hover {
+  --vp-feature-link-color: #4338ca; /* Indigo 700 - distinct from dark grey text */
+}
+
+
+
+/* --------------- Typography Customization --------------- */
+
+/* Hero Title (Name) */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+}
+
+.VPHomeHero .name, .VPHomeHero .name span {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 700 !important;
+  font-style: italic !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  font-size: 56px;
+  /* Make sure gradient works */
+  background: var(--vp-home-hero-name-background);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: var(--vp-home-hero-name-color);
+}
+
+@media (min-width: 640px) {
+  .VPHomeHero .name, .VPHomeHero .name span {
+    font-size: 64px;
+    line-height: 1.1;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHomeHero .name, .VPHomeHero .name span {
+    font-size: 72px;
+    line-height: 1;
+  }
+}
+
+/* Hero Description (Text) */
+.VPHomeHero .text {
+  font-family: 'Lora', serif !important;
+  font-size: 1.5rem !important; /* Slightly larger text */
+  margin-top: 0.5rem;
+  opacity: 0.9;
+  font-weight: 400;
+}

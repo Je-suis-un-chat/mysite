@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.30"
+  },
+  "dependencies": {
+    "oh-my-live2d": "^0.19.3",
+    "three": "^0.124.0",
+    "vanta": "^0.5.24"
+  }
+}
