@@ -12,75 +12,8 @@ export default defineConfig({
       { text: 'Archive', link: '/archive' }
     ],
 
-    // 只在特定路径下展示侧边栏
-    sidebar: {
-      // 四个 feature 对应页面：skills / books / movies / Blogs
-      '/skills': [
-        {
-          text: 'Explore',
-          items: [
-            { text: 'Skills Stack', link: '/skills' },
-            { text: 'Books', link: '/books' },
-            { text: 'Movies', link: '/movies' },
-            { text: 'Blogs', link: '/Blogs' }
-          ]
-        }
-      ],
-      '/books': [
-        {
-          text: 'Explore',
-          items: [
-            { text: 'Skills Stack', link: '/skills' },
-            { text: 'Books', link: '/books' },
-            { text: 'Movies', link: '/movies' },
-            { text: 'Blogs', link: '/Blogs' }
-          ]
-        }
-      ],
-      '/movies': [
-        {
-          text: 'Explore',
-          items: [
-            { text: 'Skills Stack', link: '/skills' },
-            { text: 'Books', link: '/books' },
-            { text: 'Movies', link: '/movies' },
-            { text: 'Blogs', link: '/Blogs' }
-          ]
-        }
-      ],
-      '/Blogs': [
-        {
-          text: 'Explore',
-          items: [
-            { text: 'Skills Stack', link: '/skills' },
-            { text: 'Books', link: '/books' },
-            { text: 'Movies', link: '/movies' },
-            { text: 'Blogs', link: '/Blogs' }
-          ]
-        }
-      ],
-
-      // 博客详情页的侧边栏
-      '/blog': [
-        {
-          text: 'Blogs',
-          items: [
-            { text: '随笔', link: '/blog1' },
-            { text: '日志', link: '/blog2' }
-          ]
-        }
-      ],
-
-      // 归档页的侧边栏（可选）
-      '/archive': [
-        {
-          text: 'Archive',
-          items: [
-            { text: '归档', link: '/archive' }
-          ]
-        }
-      ]
-    },
+    // 侧边栏设置为 false 以全局禁用，或者直接填空
+    sidebar: false,
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }

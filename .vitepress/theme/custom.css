@@ -40,7 +40,10 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
   width: 100vw;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  /* CSS Snap scrolling magic to make it behave like separate pages */
+}
+
+/* 仅在主页时开启强吸附，防止破坏其他页面(如标签页)的正常滚动 */
+#app:has(.VPHome) {
   scroll-snap-type: y mandatory;
 }
 
