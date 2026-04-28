@@ -3,6 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main] # 监听 main 分支的提交
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
