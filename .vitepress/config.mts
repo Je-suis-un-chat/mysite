@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Je-suis-un-chat",
   description: "My first personal site",
+  base: '/mysite/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -13,8 +14,7 @@ export default defineConfig({
       { text: 'Category', link: '/category' }
     ],
 
-    // 侧边栏设置为 false 以全局禁用，或者直接填空
-    sidebar: false,
+    // 侧边栏已全局禁用（未配置 sidebar 属性）
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Je-suis-un-chat' },
@@ -27,3 +27,5 @@ export default defineConfig({
     ]
   }
 })
+
+
