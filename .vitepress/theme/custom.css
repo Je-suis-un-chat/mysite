@@ -47,6 +47,36 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
   scroll-snap-type: y mandatory;
 }
 
+/* 当页面有锚点时（从文章返回），禁用 scroll-snap 以允许跳转到目标位置 */
+#app:has(.VPHome):has(:target) {
+  scroll-snap-type: none;
+}
+
+/* 当页面正在从文章返回时（通过 sessionStorage 标记），临时禁用 scroll-snap */
+#app.from-article-return {
+  scroll-snap-type: none !important;
+}
+
+/* 目标元素（文章列表容器）的滚动边距 */
+/* 增加偏移量，让"最新文章"标题在屏幕上方不可见 */
+.home-posts-container:target {
+  scroll-margin-top: 100px;
+}
+
+/* 文章列表的滚动边距，确保顶部有适当空间 */
+.article-list {
+  scroll-margin-top: 80px;
+}
+
+/* 最新文章标题样式 */
+.recent-posts-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--vp-c-text-1);
+  padding-top: 0.5rem;
+}
+
 /* Hide scrollbar for the #app container as well */
 #app::-webkit-scrollbar {
   display: none;
@@ -267,7 +297,13 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
 /* Hero Title (Name) */
 :root {
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+  /* 白天模式: 紫色渐变 */
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #a855f7 30%, #7c3aed);
+}
+
+/* 夜晚模式: 蓝色渐变 */
+.dark {
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #3b82f6 30%, #0ea5e9);
 }
 
 .VPHomeHero .name, .VPHomeHero .name span {

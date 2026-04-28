@@ -2,6 +2,10 @@
 import { computed } from 'vue'
 import { withBase } from 'vitepress'
 import { data as posts } from '../posts.data.ts'
+import { useScrollRestore, saveScrollPosition } from '../composables/useScrollRestore'
+
+// 使用滚动位置还原
+useScrollRestore()
 
 const tagMap = computed(() => {
   const map = {}
@@ -15,16 +19,22 @@ const tagMap = computed(() => {
   })
   return map
 })
+
+// 点击标签时保存滚动位置
+const handleTagClick = () => {
+  saveScrollPosition()
+}
 </script>
 
 <template>
   <div class="tags-container">
     <div class="tag-cloud">
-      <a 
-        v-for="(count, tag) in tagMap" 
-        :key="tag" 
+      <a
+        v-for="(count, tag) in tagMap"
+        :key="tag"
         :href="withBase('/tag.html?t=' + tag)"
-        class="tag" 
+        class="tag"
+        @click="handleTagClick"
       >
         <span class="tag-name">{{ tag }}</span>
         <span class="tag-count">({{ count }})</span>

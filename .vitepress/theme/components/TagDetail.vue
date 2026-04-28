@@ -2,18 +2,32 @@
 import { ref, computed, onMounted } from 'vue'
 import { withBase } from 'vitepress'
 import { data as posts } from '../posts.data.ts'
+import { useScrollRestore, saveScrollPosition } from '../composables/useScrollRestore'
+
+// 使用滚动位置还原
+useScrollRestore()
 
 const currentTag = ref('')
 
 onMounted(() => {
   const params = new URLSearchParams(window.location.search)
   currentTag.value = params.get('t') || ''
+  
+  // 保存来源页面（标签详情页面，包含当前标签参数）
+  sessionStorage.setItem('sourcePage', '/tag.html?t=' + currentTag.value)
 })
 
 const filteredPosts = computed(() => {
   if (!currentTag.value) return posts
   return posts.filter(post => post.tags && post.tags.includes(currentTag.value))
 })
+
+// 点击文章时保存滚动位置和来源页面
+const handlePostClick = () => {
+  // 保存来源页面（确保正确）
+  sessionStorage.setItem('sourcePage', '/tag.html?t=' + currentTag.value)
+  saveScrollPosition()
+}
 </script>
 
 <template>
@@ -25,7 +39,7 @@ const filteredPosts = computed(() => {
     </div>
 
     <div class="article-list">
-      <a v-for="post in filteredPosts" :key="post.url" :href="withBase(post.url)" class="article-item">
+      <a v-for="post in filteredPosts" :key="post.url" :href="withBase(post.url)" class="article-item" @click="handlePostClick">
         <div class="article-info">
           <h2 class="title">{{ post.title }}</h2>
           <div class="tags-row">

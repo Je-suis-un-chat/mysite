@@ -52,7 +52,7 @@ const catX = ref(32)
 const catY = ref(32)
 const mouseX = ref(32)
 const mouseY = ref(32)
-const isFollowing = ref(true) // Track whether the cat is currently following the cursor
+const isFollowing = ref(false) // 默认不追随，点击后开启追随模式
 
 const isGrabbed = ref(false)
 let grabOffsetX = 0
@@ -491,10 +491,11 @@ const changeSkin = (skinKey) => {
 onMounted(() => {
   isMounted.value = true
   
-  catX.value = window.innerWidth / 2 - 16
-  catY.value = window.innerHeight / 2 - 16
-  mouseX.value = window.innerWidth / 2
-  mouseY.value = window.innerHeight / 2
+  // 默认位置在右下角
+  catX.value = window.innerWidth - 100
+  catY.value = window.innerHeight - 100
+  mouseX.value = window.innerWidth - 100
+  mouseY.value = window.innerHeight - 100
 
   document.addEventListener('mousemove', handleMouseMove)
   document.addEventListener('mouseleave', handleMouseOut) // Trigger when mouse leaves window

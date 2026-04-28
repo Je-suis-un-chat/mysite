@@ -10,17 +10,9 @@
 
 <script setup>
 const scrollToFeatures = () => {
-  const target = document.querySelector('.VPFeatures')
-  const appContainer = document.querySelector('#app')
-  if (target && appContainer) {
-    const offset = 64
-    const elementPosition = target.offsetTop
-    const offsetPosition = elementPosition - offset
-
-    appContainer.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    })
+  const target = document.querySelector('.home-posts-container')
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 }
 </script>

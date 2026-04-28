@@ -1,19 +1,9 @@
 ---
-outline: deep
+layout: page
 ---
 
-# 归档
+<script setup>
+import ArchivePaws from './.vitepress/theme/components/ArchivePaws.vue'
+</script>
 
-按时间顺序查看所有文章。
-
-> 说明：后面你可以在每篇文章里加上 `date` 等信息，这里只要按时间顺序维护列表即可。
-
-## 2025
-
-- 2025-01-01 · [随笔](/blog1)
-- 2025-01-02 · [日志](/blog2)
-
-
-接下来新增文章时，只要在这里继续往下追加即可，比如：
-
-- 2025-02-10 · [新的文章标题](/blog3)
+<ArchivePaws />
