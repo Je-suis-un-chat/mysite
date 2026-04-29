@@ -1,26 +1,30 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useRoute, withBase } from 'vitepress'
+import { useRoute, useRouter, withBase } from 'vitepress'
 
 const showButton = ref(false)
 const returnUrl = ref('/')
 const route = useRoute()
+const router = useRouter()
 
 const goBack = () => {
   // 从 sessionStorage 获取来源页面
   const sourcePage = sessionStorage.getItem('sourcePage')
   
   if (sourcePage) {
-    // 如果来源是主页的锚点位置，设置标记让主页临时禁用 scroll-snap
-    if (sourcePage.startsWith('/') && sourcePage.includes('#posts-container')) {
+    // 如果来源是主页，设置标记
+    if (sourcePage === '/' || sourcePage === '/#posts-container') {
       sessionStorage.setItem('isFromArticle', 'true')
-      // 使用 withBase 确保路径正确
-      window.location.href = withBase(sourcePage)
+      sessionStorage.setItem('skipHero', 'true')
+      // 直接跳转到主页（带 base 前缀）
+      window.location.href = withBase('/')
     } else {
-      // 使用 withBase 确保路径正确
+      // 其他页面使用 window.location.href
       window.location.href = withBase(sourcePage)
     }
   } else {
+    sessionStorage.setItem('isFromArticle', 'true')
+    sessionStorage.setItem('skipHero', 'true')
     window.location.href = withBase('/')
   }
 }

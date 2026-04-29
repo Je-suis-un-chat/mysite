@@ -26,6 +26,31 @@ import { computed, ref, onMounted, nextTick } from 'vue'
 import { withBase } from 'vitepress'
 import { data as posts } from './.vitepress/theme/posts.data.ts'
 
+// 立即检查 skipHero 标记，在 DOM 渲染前隐藏 hero
+const skipHero = sessionStorage.getItem('skipHero') === 'true'
+const isFromArticle = sessionStorage.getItem('isFromArticle') === 'true'
+
+if (skipHero) {
+  // 立即添加样式隐藏 hero 区域，避免闪烁
+  const style = document.createElement('style')
+  style.id = 'skip-hero-style'
+  style.textContent = `
+    .VPHero, .VPHomeHero, .VPHero .container, .VPHero .name, .VPHero .text, .VPHero .tagline,
+    [class*="hero"], .home-hero, .VPHero-has-image .image-bg {
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+    #app { overflow: hidden !important; }
+  `
+  document.head.appendChild(style)
+  
+  // 立即滚动到顶部
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual'
+  }
+  window.scrollTo(0, 0)
+}
+
 const itemsPerPage = 5
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil(posts.length / itemsPerPage))
@@ -53,7 +78,7 @@ const goToPage = (page) => {
 // 点击文章链接时保存页码和来源页面
 const handlePostClick = () => {
   sessionStorage.setItem('blogCurrentPage', currentPage.value.toString())
-  sessionStorage.setItem('sourcePage', '/#posts-container')
+  sessionStorage.setItem('sourcePage', '/')
 }
 
 // 页面加载时恢复页码和处理锚点跳转
@@ -63,19 +88,22 @@ onMounted(() => {
     history.scrollRestoration = 'manual'
   }
   
-  // 检查是否从文章页返回（需要临时禁用scroll-snap）
+  // 检查是否需要跳过 hero 直接滚动到文章列表
+  const skipHero = sessionStorage.getItem('skipHero') === 'true'
   const isFromArticle = sessionStorage.getItem('isFromArticle') === 'true'
-  const hash = window.location.hash
-  const hasAnchor = hash === '#posts-container'
+  
+  // 清除标记
+  if (skipHero) {
+    sessionStorage.removeItem('skipHero')
+    sessionStorage.removeItem('isFromArticle')
+  }
   
   // 如果是从文章返回，临时给 #app 添加 class 禁用 scroll-snap
-  if (isFromArticle && hasAnchor) {
+  if (isFromArticle) {
     const app = document.getElementById('app')
     if (app) {
       app.classList.add('from-article-return')
     }
-    // 清除标记
-    sessionStorage.removeItem('isFromArticle')
   }
   
   // 恢复页码
@@ -87,28 +115,39 @@ onMounted(() => {
     }
   }
   
-  // 如果有锚点，立即滚动（避免先显示顶部）
-  if (hasAnchor) {
-    // 使用多次 requestAnimationFrame 确保 DOM 完全渲染
+  // 如果需要跳过 hero，立即滚动到文章列表
+  if (skipHero) {
+    // 使用 CSS 预先隐藏 hero，避免闪烁
+    const style = document.createElement('style')
+    style.id = 'skip-hero-style'
+    style.textContent = '.VPHero, .VPHomeHero, [class*="hero"] { visibility: hidden !important; }'
+    document.head.appendChild(style)
+    
+    // 立即滚动到顶部（文章列表区域）
+    window.scrollTo(0, 0)
+    
+    // 使用 requestAnimationFrame 确保 DOM 渲染后移除样式
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        // 直接滚动到文章列表，让"最新文章"标题在屏幕上方不可见
+        // 滚动到文章列表位置
         const articleList = document.querySelector('.article-list')
         if (articleList) {
-          // 清除 hash
-          history.replaceState(null, '', window.location.pathname)
-          
-          // 滚动到文章列表位置（标题会在上方）
           articleList.scrollIntoView({ behavior: 'instant', block: 'start' })
-          
-          // 滚动完成后移除临时 class，恢复 scroll-snap
-          setTimeout(() => {
-            const app = document.getElementById('app')
-            if (app) {
-              app.classList.remove('from-article-return')
-            }
-          }, 300)
         }
+        
+        // 移除临时隐藏样式
+        const skipStyle = document.getElementById('skip-hero-style')
+        if (skipStyle) {
+          skipStyle.remove()
+        }
+        
+        // 滚动完成后移除临时 class，恢复 scroll-snap
+        setTimeout(() => {
+          const app = document.getElementById('app')
+          if (app) {
+            app.classList.remove('from-article-return')
+          }
+        }, 300)
       })
     })
   }
