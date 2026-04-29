@@ -88,15 +88,9 @@ onMounted(() => {
     history.scrollRestoration = 'manual'
   }
   
-  // 检查是否需要跳过 hero 直接滚动到文章列表
-  const skipHero = sessionStorage.getItem('skipHero') === 'true'
-  const isFromArticle = sessionStorage.getItem('isFromArticle') === 'true'
-  
-  // 清除标记
-  if (skipHero) {
-    sessionStorage.removeItem('skipHero')
-    sessionStorage.removeItem('isFromArticle')
-  }
+  // 清除 sessionStorage 标记
+  sessionStorage.removeItem('skipHero')
+  sessionStorage.removeItem('isFromArticle')
   
   // 如果是从文章返回，临时给 #app 添加 class 禁用 scroll-snap
   if (isFromArticle) {
@@ -117,16 +111,10 @@ onMounted(() => {
   
   // 如果需要跳过 hero，立即滚动到文章列表
   if (skipHero) {
-    // 使用 CSS 预先隐藏 hero，避免闪烁
-    const style = document.createElement('style')
-    style.id = 'skip-hero-style'
-    style.textContent = '.VPHero, .VPHomeHero, [class*="hero"] { visibility: hidden !important; }'
-    document.head.appendChild(style)
-    
     // 立即滚动到顶部（文章列表区域）
     window.scrollTo(0, 0)
     
-    // 使用 requestAnimationFrame 确保 DOM 渲染后移除样式
+    // 使用 requestAnimationFrame 确保 DOM 渲染后移除样式并滚动
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         // 滚动到文章列表位置
@@ -135,7 +123,7 @@ onMounted(() => {
           articleList.scrollIntoView({ behavior: 'instant', block: 'start' })
         }
         
-        // 移除临时隐藏样式
+        // 移除临时隐藏样式（由 script setup 开头添加的）
         const skipStyle = document.getElementById('skip-hero-style')
         if (skipStyle) {
           skipStyle.remove()
