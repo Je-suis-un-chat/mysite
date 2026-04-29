@@ -14,7 +14,8 @@ onMounted(() => {
   currentTag.value = params.get('t') || ''
   
   // 保存来源页面（标签详情页面，包含当前标签参数）
-  sessionStorage.setItem('sourcePage', '/tag.html?t=' + currentTag.value)
+  // 注意：不保存带查询参数的路径，返回时回到 tag 列表页
+  sessionStorage.setItem('sourcePage', '/tags.html')
 })
 
 const filteredPosts = computed(() => {
@@ -24,8 +25,8 @@ const filteredPosts = computed(() => {
 
 // 点击文章时保存滚动位置和来源页面
 const handlePostClick = () => {
-  // 保存来源页面（确保正确）
-  sessionStorage.setItem('sourcePage', '/tag.html?t=' + currentTag.value)
+  // 保存来源页面（标签详情页面）
+  sessionStorage.setItem('sourcePage', '/tag.html?t=' + encodeURIComponent(currentTag.value))
   saveScrollPosition()
 }
 </script>

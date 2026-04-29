@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { withBase } from 'vitepress'
 import { data as categories } from '../category.data.ts'
 import { useScrollRestore, saveScrollPosition } from '../composables/useScrollRestore'
 
@@ -19,7 +20,7 @@ const formatDate = (dateStr: string) => {
 
 // 点击文章时保存来源页面和滚动位置（分类页面）
 const handlePostClick = () => {
-  sessionStorage.setItem('sourcePage', '/category')
+  sessionStorage.setItem('sourcePage', '/category.html')
   saveScrollPosition()
 }
 </script>
@@ -64,10 +65,10 @@ const handlePostClick = () => {
         <!-- 文章列表（展开时显示） -->
         <Transition name="expand">
           <div v-if="activeCategory === category.name && category.posts.length > 0" class="posts-list">
-            <a 
-              v-for="post in category.posts" 
+            <a
+              v-for="post in category.posts"
               :key="post.url"
-              :href="post.url"
+              :href="withBase(post.url)"
               class="post-item"
               @click="handlePostClick"
             >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vitepress'
+import { useRoute, withBase } from 'vitepress'
 
 const showButton = ref(false)
 const returnUrl = ref('/')
@@ -14,12 +14,14 @@ const goBack = () => {
     // 如果来源是主页的锚点位置，设置标记让主页临时禁用 scroll-snap
     if (sourcePage.startsWith('/') && sourcePage.includes('#posts-container')) {
       sessionStorage.setItem('isFromArticle', 'true')
-      window.location.href = sourcePage
+      // 使用 withBase 确保路径正确
+      window.location.href = withBase(sourcePage)
     } else {
-      window.location.href = sourcePage
+      // 使用 withBase 确保路径正确
+      window.location.href = withBase(sourcePage)
     }
   } else {
-    window.location.href = '/'
+    window.location.href = withBase('/')
   }
 }
 

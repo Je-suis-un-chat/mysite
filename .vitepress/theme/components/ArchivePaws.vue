@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
 import { data as archives } from '../archives.data.ts'
 import { useScrollRestore, saveScrollPosition } from '../composables/useScrollRestore'
 
@@ -13,7 +14,7 @@ const formatDate = (dateStr: string) => {
 
 // 点击文章时保存来源页面和滚动位置
 const handlePostClick = () => {
-  sessionStorage.setItem('sourcePage', '/archive')
+  sessionStorage.setItem('sourcePage', '/archive.html')
   saveScrollPosition()
 }
 </script>
@@ -33,7 +34,7 @@ const handlePostClick = () => {
           <a
             v-for="post in yearGroup.posts"
             :key="post.url"
-            :href="post.url"
+            :href="withBase(post.url)"
             class="post-item"
             @click="handlePostClick"
           >
