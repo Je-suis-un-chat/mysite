@@ -11,6 +11,9 @@ export interface YearGroup {
   posts: Post[]
 }
 
+declare const data: YearGroup[]
+export { data }
+
 export default createContentLoader('Blogs/*.md', {
   transform(raw): YearGroup[] {
     // 过滤并提取文章信息

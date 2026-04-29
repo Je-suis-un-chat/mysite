@@ -342,3 +342,15 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
   opacity: 0.9;
   font-weight: 400;
 }
+
+/* 针对 VitePress 的正文段落进行首行缩进 */
+.vp-doc p {
+  text-indent: 2em; /* 2em 正好代表两个中文字符的宽度 */
+}
+
+/* 排除不需要缩进的特殊段落（非常关键！） */
+.vp-doc blockquote p, /* 引用块内的文字不缩进 */
+.vp-doc li p,         /* 列表内的文字不缩进 */
+.vp-doc .custom-block p { /* 提示框（Tip/Warning）内的文字不缩进 */
+  text-indent: 0;
+}

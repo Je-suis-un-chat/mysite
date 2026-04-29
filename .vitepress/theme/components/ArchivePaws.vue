@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { data as archives } from '../archives.data.ts'
+import type { YearGroup } from '../archives.data.ts'
 import { useScrollRestore, saveScrollPosition } from '../composables/useScrollRestore'
 
 // 使用滚动位置还原

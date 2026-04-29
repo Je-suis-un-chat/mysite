@@ -33,7 +33,10 @@ const categories: CategoryConfig[] = [
     icon: '🌸',
     description: 'In Dreams We Dream.'
   }
-]
+ ]
+
+declare const data: CategoryGroup[]
+export { data }
 
 export default createContentLoader('Blogs/*.md', {
   transform(raw): CategoryGroup[] {
