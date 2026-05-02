@@ -5,6 +5,10 @@ export default defineConfig({
   title: "Je-suis-un-chat",
   description: "My first personal site",
   base: '/',
+  head: [
+    // 这里的 /logo.png 会自动去 docs/public/ 目录下寻找文件
+    ['link', { rel: 'icon', href: '/logo.png' }]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
