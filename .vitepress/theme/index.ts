@@ -5,6 +5,7 @@ import ScrollDown from './components/ScrollDown.vue'
 import VantaBirdsHero from './components/VantaBirdsHero.vue'
 import TypewriterHero from './components/TypewriterHero.vue'
 import BackButton from './components/BackButton.vue'
+import { useScrollRestore } from './composables/useScrollRestore'
 import './custom.css'
 
 export default {
@@ -17,5 +18,9 @@ export default {
       'home-hero-info-after': () => h(TypewriterHero),
       'doc-before': () => h(BackButton)
     })
+  },
+  setup() {
+    // 初始化滚动位置恢复逻辑
+    useScrollRestore()
   }
 }
